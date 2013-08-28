@@ -21,6 +21,7 @@ public class MainActivity extends Activity
 	{
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main_activity_menu, menu);
+		// Changes the action bar properties (such as title and icon)
 		setTitle("my new title");
 		getActionBar().setIcon(R.drawable.navigation_back);
 		return true;
@@ -35,20 +36,21 @@ public class MainActivity extends Activity
 		switch(item.getItemId())
 		{
 		case R.id.event:
+			Intent startNewActivityOpen = new Intent(this, EventActivity.class);
+        	this.startActivity(startNewActivityOpen);
 			Log.i(TAG, "event item clicked");
-		return true;
+			break;
 		
 		case R.id.home:
 			Log.i(TAG, "go home clicked");
-		return true;
+			break;
 		
 		case R.id.refresh:
 			Log.i(TAG, "refresh clicked");
-		return true;
+			break;
 		
-		default:
-			return super.onOptionsItemSelected(item);
 		}
+		return super.onOptionsItemSelected(item);
 	}
 	
 	@Override
