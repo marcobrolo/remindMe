@@ -80,16 +80,13 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
 	@Override
 	public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent)
 	{	
-		Log.i("HJIHIHIHIH:", "1d");
 		String headerTitle = (String) getGroup(groupPosition);
 		if (convertView == null)
 		{
 			LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = infalInflater.inflate(R.layout.list_group, null);
 		}
-		Log.i("HJIHIHIHIH:", "2d");
 		TextView lblListHeader = (TextView) convertView.findViewById(R.id.lblListHeader);
-		Log.i("HJIHIHIHIH:", "3d");
 		lblListHeader.setTypeface(null, Typeface.BOLD);
 		lblListHeader.setText(headerTitle);
 		return convertView;

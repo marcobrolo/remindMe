@@ -7,14 +7,32 @@ import java.util.List;
 import android.app.Activity;
 import android.app.ExpandableListActivity;
 import android.os.Bundle;
+import android.view.Menu;
 import android.widget.ExpandableListView;
 
-public class EventActivity extends Activity
+public class EventActivity extends BaseActivity
 {
 	ExpandableListAdapter listAdapter;
     ExpandableListView expListView;
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
+    
+    /*
+     * own option menu since we want different action bar menu than other activities
+     */
+    @Override
+	public boolean onCreateOptionsMenu(Menu menu) 
+	{
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.event_activity_menu, menu);
+		// Changes the action bar properties (such as title and icon)
+		setTitle("Events");
+		//getActionBar().setIcon(R.drawable.navigation_back);
+		// set home button in action bar
+		
+		getActionBar().setHomeButtonEnabled(true);
+		return true;
+	}
     
 	@Override
 	public void onCreate(Bundle savedInstanceState) 
