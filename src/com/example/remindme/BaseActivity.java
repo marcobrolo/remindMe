@@ -33,9 +33,14 @@ public class BaseActivity extends Activity
 		switch(item.getItemId())
 		{
 		case R.id.event:
-			Intent startNewActivityOpen = new Intent(this, EventActivity.class);
-        	this.startActivity(startNewActivityOpen);
+			Intent newEventActivity = new Intent(this, EventActivity.class);
+        	this.startActivity(newEventActivity);
 			Log.i(TAG, "event item clicked");
+			break;
+		case R.id.note:
+			Intent startNewActivityOpen = new Intent(this, NoteActivity.class);
+        	this.startActivity(startNewActivityOpen);
+			Log.i(TAG, "note item clicked");
 			break;
 		
 		case R.id.home:
