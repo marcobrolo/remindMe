@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+	<item 
+	    android:id="@+id/menu_settings"
+	    android:title="@string/menu_settings"
+	    android:orderInCategory="100"
+	    android:showAsAction="never">
+	</item>
+	<item
+	    android:id="@+id/home"
+	    android:icon="@drawable/navigation_back"
+	    android:orderInCategory="1"
+	    android:showAsAction="always">
+	</item>
+	<item
+	    android:id="@+id/note"
+	    android:title="note"
+	    android:orderInCategory="2"
+	    android:showAsAction="always">
+	</item>
+	<item
+	    android:id="@+id/refresh"
+	    android:title="refresh"
+	    android:orderInCategory="3"
+	    android:showAsAction="always">
+	</item>
+</menu>

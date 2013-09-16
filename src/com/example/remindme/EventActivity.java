@@ -8,11 +8,13 @@ import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -22,7 +24,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class EventActivity extends ListActivity
+public class EventActivity extends BaseActivityList
 {	
 	private final String TAG = "Event Activity"; 
 	private Button mButton;
@@ -32,6 +34,19 @@ public class EventActivity extends ListActivity
     private ArrayAdapter<MyData> mListAdapter;
     private boolean mCountersActive;
     private GregorianCalendar gToday = new GregorianCalendar();
+    
+    /*
+     * Setting own option menu for this activity
+     */
+    public boolean onCreateOptionsMenu(Menu menu) 
+	{
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.event_activity_menu, menu);
+		// Changes the action bar properties (such as title and icon)
+		setTitle("Events");
+		getActionBar().setIcon(R.drawable.navigation_back);
+		return true;
+	}
     
     public void CountDownList() 
     {
@@ -76,20 +91,9 @@ public class EventActivity extends ListActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_main);
         
-        
         Log.i(TAG, "loaded shit");
+        // load top menu
         
-        // start and stop button
-        mButton = (Button) findViewById(R.id.myButton);
-        mButton.setText("Stop");
-        mButton.setOnClickListener(new OnClickListener() 
-        {            
-            @Override
-            public void onClick(View v) 
-            {            
-                stopStart();
-            }
-        });
         
         Log.i(TAG, "adding test data");
         // add some test data
@@ -115,24 +119,8 @@ public class EventActivity extends ListActivity
         setListAdapter(mListAdapter);        
         // start counters
         Log.i(TAG, "starting stopStart()");
-        stopStart();
     }    
 
-    private void stopStart() 
-    {
-    	Log.i(TAG, "inside stopStart()");
-        if (mCountersActive) 
-        {
-            mCountersActive = false;
-            mButton.setText("Start");
-        }
-        else
-        {
-            mCountersActive = true;
-            mHandler.post(mRunnable);
-            mButton.setText("Stop");
-        }
-    }
 
     private class MyListAdapter extends ArrayAdapter<MyData>
     {

@@ -26,7 +26,7 @@ public class NoteActivity extends BaseActivity
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.note_activity_menu, menu);
 		// Changes the action bar properties (such as title and icon)
-		setTitle("Events");
+		setTitle("Notes");
 		//getActionBar().setIcon(R.drawable.navigation_back);
 		// set home button in action bar
 		
