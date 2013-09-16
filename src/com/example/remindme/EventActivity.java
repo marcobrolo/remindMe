@@ -52,12 +52,7 @@ public class EventActivity extends ListActivity
                     {
                         myData = mDataList.get(i);
                         //myData.CalculateDaysHours();
-                        if (myData.getCount() > 0) 
-                        {
-                        	// decrement the counters
-                            myData.reduceCount();
-                        }
-                        else
+                        if (myData.eventFinished()== true)
                         {
                         	// otherwise when the event timer expires we remove the
                         	// entry and update the listview to reflect the change
@@ -80,7 +75,7 @@ public class EventActivity extends ListActivity
     	Log.i(TAG, "creating activity");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_main);
-        Log.i(TAG, "current time is" + gToday.getTime());
+        
         
         Log.i(TAG, "loaded shit");
         
@@ -103,7 +98,7 @@ public class EventActivity extends ListActivity
         int j = 3;
         for (int i=0; i < 32; i++)
         {
-            data = new MyData("hi", j);
+            data = new MyData("hi");
             mDataList.add(data);
             j = j + 3;
         }
@@ -211,7 +206,6 @@ public class EventActivity extends ListActivity
     private class MyData
     {
         private String text;
-        private int count;
         private int seconds, minutes, hours,days;
         
         private GregorianCalendar Gdate; 
@@ -232,12 +226,22 @@ public class EventActivity extends ListActivity
         {
         	seconds = hourVal;
         }
+        public boolean eventFinished()
+        {
+        	if (this.seconds == 0 && this.minutes == 0 && this.hours == 0 && this.days == 0)
+        	{
+        		return true;
+        	}
+        	return false;
+        }
         
-        public MyData(String text, int count)
+        public MyData(String text)
         {
             this.text = text;
-            this.count = count;
-            this.Gdate = new GregorianCalendar(2013,9,12,20,30);
+            // NOTE: gregorian Calendar offsets month and minutes by 1 ie Jan = 0 Dec =11
+            
+            //this.Gdate = new GregorianCalendar(2013,8,16,12,41);
+            this.Gdate = new GregorianCalendar(2013,Calendar.SEPTEMBER, 16, 12, 50);
             CalculateDaysHours();
         }
         public GregorianCalendar getGDate()
@@ -249,6 +253,8 @@ public class EventActivity extends ListActivity
         {
         	GregorianCalendar gtoday = new GregorianCalendar();
         	long diffInMs = Gdate.getTimeInMillis()-gToday.getTimeInMillis();
+        	Log.i(TAG, "event time is" + Gdate.getTime());
+        	Log.i(TAG, "current time is" + gToday.getTime());
         	new CountDownTimer(diffInMs, 1000)
         	{
         		public void onTick(long millisUntilFinished)
@@ -260,7 +266,10 @@ public class EventActivity extends ListActivity
         		}
         		public void onFinish()
         		{
-        	         
+        	         seconds = 0;
+        	         minutes = 0;
+        	         hours = 0;
+        	         days = 0;
         	    }
         	}.start();
         	
@@ -271,10 +280,6 @@ public class EventActivity extends ListActivity
         	
         }
 
-        public int getCount()
-        {
-            return count;
-        }
 
         public String getCountAsString()
         {
@@ -283,13 +288,6 @@ public class EventActivity extends ListActivity
             		String.valueOf(minutes)+"m:"+String.valueOf(seconds)+"s";
         }
 
-        public void reduceCount()
-        {
-            if (count > 0)
-            {
-                count--;
-            }
-        }
     }
 
 }
