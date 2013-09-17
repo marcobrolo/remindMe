@@ -2,14 +2,18 @@
 package com.example.remindme;
 
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Toast;
+
 import java.util.HashMap;
 import java.util.List;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter
@@ -50,6 +54,19 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
 		}
 		TextView txtListChild = (TextView) convertView.findViewById(R.id.lblListItem);
 		txtListChild.setText(childText);
+		//http://stackoverflow.com/questions/16754734/launch-new-activity-from-within-expandable-list-view-adapter
+		convertView.setOnClickListener(new OnClickListener() 
+		{
+			@Override
+			public void onClick(View v) 
+			{	
+				Log.d("child item clicked", "asdA");
+				// http://stackoverflow.com/questions/10695978/statrt-newactivity-from-onchildclick-of-expandablelistview
+				Intent intent = new Intent (_context, EditNoteActivity.class);
+				_context.startActivity(intent);
+				//startActivity(new Intent(getApplicationContext(), EditNoteActivity.class));
+			}
+		});
 		return convertView;
 	}
 

@@ -7,6 +7,7 @@ import java.util.List;
 import android.app.Activity;
 import android.app.ExpandableListActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.widget.ExpandableListView;
 
@@ -16,14 +17,16 @@ public class NoteActivity extends BaseActivity
     ExpandableListView expListView;
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
+    private EventsDataSource datasource;
+    private final String TAG = "NoteActivity";
     
     /*
      * own option menu since we want different action bar menu than other activities
      */
     @Override
 	public boolean onCreateOptionsMenu(Menu menu) 
-	{
-		// Inflate the menu; this adds items to the action bar if it is present.
+	{  	
+    	// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.note_activity_menu, menu);
 		// Changes the action bar properties (such as title and icon)
 		setTitle("Notes");
@@ -37,15 +40,27 @@ public class NoteActivity extends BaseActivity
 	@Override
 	public void onCreate(Bundle savedInstanceState) 
 	{	
-		
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.note_main);
- 
+        this.deleteDatabase("comments.db");
+        // add database
+    	datasource = new EventsDataSource(this);
+        Log.i(TAG, "create new event data source");
+    	datasource.open();
+        Log.i(TAG, "open new event data source");
+        datasource.createComment("hiho");
+    	List<note> notes = datasource.getAllNotes();
+    	//List<note>notes = new ArrayList<note>();
+    	//note noteVal = new note();
+    	//noteVal.setId(0);
+    	//noteVal.setComment("bitch");
+    	//notes.add(noteVal);
+    	
         // get the listview
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
  
         // preparing list data
-        prepareListData();
+        prepareListData(notes);
  
         listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
  
@@ -53,7 +68,8 @@ public class NoteActivity extends BaseActivity
         expListView.setAdapter(listAdapter);
 	}
 	
-	private void prepareListData() {
+	private void prepareListData(List<note> notes)
+	{
         listDataHeader = new ArrayList<String>();
         listDataChild = new HashMap<String, List<String>>();
  
@@ -61,6 +77,7 @@ public class NoteActivity extends BaseActivity
         listDataHeader.add("Top 250");
         listDataHeader.add("Now Showing");
         listDataHeader.add("Coming Soon..");
+        listDataHeader.add(notes.get(0).getComment());
  
         // Adding child data
         List<String> top250 = new ArrayList<String>();
