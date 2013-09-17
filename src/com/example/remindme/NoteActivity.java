@@ -6,6 +6,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.ExpandableListActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -19,6 +20,7 @@ public class NoteActivity extends BaseActivity
     HashMap<String, List<String>> listDataChild;
     private EventsDataSource datasource;
     private final String TAG = "NoteActivity";
+    private static final int ACTIVITY_EDIT_NOTE = 0;
     
     /*
      * own option menu since we want different action bar menu than other activities
@@ -108,4 +110,21 @@ public class NoteActivity extends BaseActivity
         listDataChild.put(listDataHeader.get(1), nowShowing);
         listDataChild.put(listDataHeader.get(2), comingSoon);
     }
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent intent)
+	{
+		Log.d("getting back hdead", "come here");
+		//super.onActivityResult(requestCode, resultCode, intent);
+		Bundle extras = intent.getExtras();
+		
+		switch(requestCode)
+		{
+		case ACTIVITY_EDIT_NOTE:
+			String title = extras.getString("Title");
+			String comment = extras.getString("Comments");
+			Log.d("getting back hdead", title);
+			Log.d("getting back child", comment);
+		}
+	}
 }

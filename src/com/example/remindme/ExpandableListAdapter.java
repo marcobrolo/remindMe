@@ -6,9 +6,12 @@ import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.List;
+
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +24,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
 	private Context _context;
 	private List<String> _listDataHeader;
 	private HashMap<String, List<String>> _listDataChild;
+	
+	private static final int ACTIVITY_EDIT_NOTE = 0;
 	
 	public ExpandableListAdapter(Context context, List<String> listDataHeader,
 			HashMap<String, List<String>> listChildData)
@@ -47,6 +52,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
 			ViewGroup parent)
 	{
 		final String childText = (String) getChild(groupPosition, childPosition);
+		final String headerText = (String) getGroup(groupPosition);
 		if (convertView == null)
 		{
 			LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -61,11 +67,15 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
 			public void onClick(View v) 
 			{	
 				Log.d("child item clicked", "asdA");
-				// http://stackoverflow.com/questions/10695978/statrt-newactivity-from-onchildclick-of-expandablelistview
-				Intent intent = new Intent (_context, EditNoteActivity.class);
-				_context.startActivity(intent);
-				//startActivity(new Intent(getApplicationContext(), EditNoteActivity.class));
+				Log.d("header is", headerText);
+				Log.d("child is", childText);
+				Intent intent = new Intent (ExpandableListAdapter.this._context, EditNoteActivity.class);
+				intent.putExtra("Title", headerText);
+				intent.putExtra("Comment", childText);
+				((Activity)ExpandableListAdapter.this._context).startActivityForResult(intent,ACTIVITY_EDIT_NOTE);
+
 			}
+			
 		});
 		return convertView;
 	}
