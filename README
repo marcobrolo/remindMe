@@ -1,0 +1,11 @@
+remindMe: Android application
+Created by Mark Lui
+
+Usage: feel free to use and modify code.
+
+About: personal exploration project to learn how to make Android apps along with programming in JAVA.
+  Some parts of the code were modified from online sources (I've included urls in the comments showing
+  where I grabbed the code/ sought for help)
+  
+  remindMe is a simple application that allows users to create personal reminder notes. Users can also
+  create events (with deadlines) upon which the app will countdown the time for the event.
