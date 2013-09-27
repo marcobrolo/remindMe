@@ -1,5 +1,8 @@
 package com.example.remindme;
-
+/*
+ * The note activity, where users can view and modify previous notes
+ * As well as make new ones
+ */
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,11 +55,6 @@ public class NoteActivity extends BaseActivity
         Log.i(TAG, "open new event data source");
         datasource.createComment("hiho");
     	List<note> notes = datasource.getAllNotes();
-    	//List<note>notes = new ArrayList<note>();
-    	//note noteVal = new note();
-    	//noteVal.setId(0);
-    	//noteVal.setComment("bitch");
-    	//notes.add(noteVal);
     	
         // get the listview
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
@@ -114,7 +112,7 @@ public class NoteActivity extends BaseActivity
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent intent)
 	{
-		Log.d("getting back hdead", "come here");
+		Log.d("getting back header", "come here");
 		//super.onActivityResult(requestCode, resultCode, intent);
 		Bundle extras = intent.getExtras();
 		
@@ -123,7 +121,7 @@ public class NoteActivity extends BaseActivity
 		case ACTIVITY_EDIT_NOTE:
 			String title = extras.getString("Title");
 			String comment = extras.getString("Comments");
-			Log.d("getting back hdead", title);
+			Log.d("getting back header", title);
 			Log.d("getting back child", comment);
 		}
 	}

@@ -1,5 +1,8 @@
 package com.example.remindme;
-
+/*
+ * Handles the event activity where users can create upcoming events which
+ * will count down as the deadline approaches
+ */
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -27,13 +30,14 @@ import android.widget.Toast;
 public class EventActivity extends BaseActivityList
 {	
 	private final String TAG = "Event Activity"; 
-	private Button mButton;
-    private ArrayList<MyData> mDataList = new ArrayList<MyData>();
+    private ArrayList<MyData> mDataList = new ArrayList<MyData>();	// holds events
 
     private Handler mHandler;
-    private ArrayAdapter<MyData> mListAdapter;
+    private ArrayAdapter<MyData> mListAdapter;						// expandable list adapter responsible for
+    																// the actions for list adapter
     private boolean mCountersActive;
-    private GregorianCalendar gToday = new GregorianCalendar();
+    private GregorianCalendar gToday = new GregorianCalendar();		// stores today's time for
+    																// calculating when events expire
     
     /*
      * Setting own option menu for this activity
@@ -66,16 +70,16 @@ public class EventActivity extends BaseActivityList
                     for (int i=0; i < mDataList.size(); i++) 
                     {
                         myData = mDataList.get(i);
-                        //myData.CalculateDaysHours();
+
                         if (myData.eventFinished()== true)
                         {
-                        	// otherwise when the event timer expires we remove the
+                        	// when the event timer expires we remove the
                         	// entry and update the listview to reflect the change
                         	mDataList.remove(i);
                         	mListAdapter.notifyDataSetChanged();
                         }
                     }
-                    // notify that data has been changed
+                    // notify that data has been changed (update the time)
                     mListAdapter.notifyDataSetChanged();
                 }
                 // update every second
@@ -91,9 +95,7 @@ public class EventActivity extends BaseActivityList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_main);
         
-        Log.i(TAG, "loaded shit");
         // load top menu
-        
         
         Log.i(TAG, "adding test data");
         // add some test data
@@ -122,9 +124,12 @@ public class EventActivity extends BaseActivityList
     }    
 
 
+    /*
+     * List adapter to handle the list view functions
+     */
     private class MyListAdapter extends ArrayAdapter<MyData>
     {
-
+    	
         private ArrayList<MyData> items;
         private LayoutInflater vi = (LayoutInflater) 
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -170,15 +175,20 @@ public class EventActivity extends BaseActivityList
     }
 
     @Override
+    /*
+     * When item is clicked itll prompt the user to verify the wish to delete the event
+     */
     protected void onListItemClick(ListView l, View v, int position, long id)
     {
     	// TODO: implement some removal feature
     	super.onListItemClick(l,v, position, id);
+    	// Popup alert
     	AlertDialog.Builder alertDiag = new AlertDialog.Builder(this);
     	alertDiag.setTitle("Delete?");
     	alertDiag.setMessage("Are you sure you wanna delete?");
     	final int positionToRemove = position;
     	alertDiag.setNegativeButton("Cancel", null);
+    	// Upon hitting confirm to delete event, delete the event
     	alertDiag.setPositiveButton("Ok", new AlertDialog.OnClickListener()
     	{
     		public void onClick(DialogInterface dialog, int which)
@@ -191,6 +201,10 @@ public class EventActivity extends BaseActivityList
     	alertDiag.show();
     }
     
+    /*
+     * Object used to hold the event, has the event title as well
+     * as the deadline
+     */
     private class MyData
     {
         private String text;
@@ -237,6 +251,10 @@ public class EventActivity extends BaseActivityList
         	return Gdate;
         }
         
+        /*
+         * calculates when the event will expire in terms of days hours
+         * minutes and seconds
+         */
         public void CalculateDaysHours()
         {
         	GregorianCalendar gtoday = new GregorianCalendar();
@@ -262,13 +280,20 @@ public class EventActivity extends BaseActivityList
         	}.start();
         	
         }
+        
+        /*
+         * return event name
+         */
         public String getText()
         {
             return text;
         	
         }
 
-
+        /*
+         * returns the hours,days,minutes, and seconds in form of string for
+         * displaying purposes
+         */
         public String getCountAsString()
         {
             //return Integer.toString(seconds);

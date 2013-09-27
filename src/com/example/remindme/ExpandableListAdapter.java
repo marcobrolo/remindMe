@@ -1,6 +1,10 @@
-//http://www.androidhive.info/2013/07/android-expandable-list-view-tutorial/
-package com.example.remindme;
 
+package com.example.remindme;
+/*
+ * handles the actions for expandable list adapter in our NotesActivity
+ * template taken from tutorial
+ * 	//http://www.androidhive.info/2013/07/android-expandable-list-view-tutorial/
+ */
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Toast;
 
@@ -24,6 +28,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
 	private Context _context;
 	private List<String> _listDataHeader;
 	private HashMap<String, List<String>> _listDataChild;
+	private final String TAG = "Expandable list adapter";
 	
 	private static final int ACTIVITY_EDIT_NOTE = 0;
 	
@@ -51,6 +56,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
 	public View getChildView(int groupPosition, final int childPosition, boolean isLastChild, View convertView,
 			ViewGroup parent)
 	{
+		Log.d(TAG, "expanding parent");
 		final String childText = (String) getChild(groupPosition, childPosition);
 		final String headerText = (String) getGroup(groupPosition);
 		if (convertView == null)
@@ -60,15 +66,22 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
 		}
 		TextView txtListChild = (TextView) convertView.findViewById(R.id.lblListItem);
 		txtListChild.setText(childText);
-		//http://stackoverflow.com/questions/16754734/launch-new-activity-from-within-expandable-list-view-adapter
+		/*
+		 * when a child is clicked, this indicates the desire to edit the note
+		 * upon which we should prompt user and open up a new activity for editing
+		 * the note
+		 * ref://http://stackoverflow.com/questions/16754734/launch-new-activity-from-within-expandable-list-view-adapter
+		 * 
+		 */
+		
 		convertView.setOnClickListener(new OnClickListener() 
 		{
 			@Override
 			public void onClick(View v) 
 			{	
-				Log.d("child item clicked", "asdA");
-				Log.d("header is", headerText);
-				Log.d("child is", childText);
+				Log.d(TAG, "child item clicked");
+				Log.d(TAG, "header is " + headerText);
+				Log.d(TAG, "child is "+ childText);
 				Intent intent = new Intent (ExpandableListAdapter.this._context, EditNoteActivity.class);
 				intent.putExtra("Title", headerText);
 				intent.putExtra("Comment", childText);
@@ -83,7 +96,16 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
 	@Override
 	public int getChildrenCount(int groupPosition)
 	{
-		return this._listDataChild.get(this._listDataHeader.get(groupPosition)).size();
+		Log.d(TAG, "getting children count");
+		try 
+		{
+			return this._listDataChild.get(this._listDataHeader.get(groupPosition)).size();
+		} catch (NullPointerException e)
+		{
+			Log.d(TAG, "header has no child");
+			return 0;
+		}
+		
 	}
 
 	@Override

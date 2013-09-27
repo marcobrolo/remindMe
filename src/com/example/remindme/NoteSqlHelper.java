@@ -1,5 +1,8 @@
 package com.example.remindme;
-
+/*
+ * database helper file that contains many basic functions
+ * that interfaces with the db
+ */
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;

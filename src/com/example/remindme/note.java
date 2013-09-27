@@ -1,7 +1,8 @@
 package com.example.remindme;
 
 /*
- * Note class used to store notes that users input, which will be saved onto db
+ * Note class used to store user defined notes
+ * Will be stored in a db
  */
 public class note 
 {

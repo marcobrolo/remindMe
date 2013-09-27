@@ -35,6 +35,9 @@ public class EventsDataSource
 		dbHelper.close();
 	}
 	
+	/*
+	 * creates new note and adds into the db
+	 */
 	public note createComment(String comment)
 	{
 		ContentValues values = new ContentValues();
@@ -49,6 +52,9 @@ public class EventsDataSource
 		return newNote;
 	}
 	
+	/*
+	 * deletes comment from db
+	 */
 	public void deleteComment(note note)
 	{
 		long id = note.getId();

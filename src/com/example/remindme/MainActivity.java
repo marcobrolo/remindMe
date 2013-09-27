@@ -3,7 +3,9 @@
  * http://www.youtube.com/watch?v=J5a1gD1p_8w
  */
 package com.example.remindme;
-
+/*
+ * The main activity for the app
+ */
 import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
@@ -16,43 +18,6 @@ import android.view.MenuItem;
 public class MainActivity extends BaseActivity
 {
 	private final String TAG = "Main Activity";
-	/*
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) 
-	{
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main_activity_menu, menu);
-		// Changes the action bar properties (such as title and icon)
-		setTitle("my new title");
-		getActionBar().setIcon(R.drawable.navigation_back);
-		return true;
-	}
-	*/
-	/*
-	 * click actions when a menu is clicked.
-	 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item)
-	{
-		switch(item.getItemId())
-		{
-		case R.id.event:
-			Intent startNewActivityOpen = new Intent(this, EventActivity.class);
-        	this.startActivity(startNewActivityOpen);
-			Log.i(TAG, "event item clicked");
-			break;
-		
-		case R.id.home:
-			Log.i(TAG, "go home clicked");
-			break;
-		
-		case R.id.refresh:
-			Log.i(TAG, "refresh clicked");
-			break;
-		
-		}
-		return super.onOptionsItemSelected(item);
-	}*/
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)

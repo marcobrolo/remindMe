@@ -1,5 +1,8 @@
 package com.example.remindme;
-
+/*
+ * Handles the editing of Notes from NoteActivity, user will be able
+ * to edit the contents of the note
+ */
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,11 +12,9 @@ import android.widget.EditText;
 
 public class EditNoteActivity extends Activity
 {
-	private EditText mTitleText;
-	private EditText mBodyText;
+	private EditText mTitleText;	// Title (category) of the note, should not be editable
+	private EditText mBodyText;		// Content of the note
 	private Long mRowId;
-	
-	
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) 
@@ -28,9 +29,10 @@ public class EditNoteActivity extends Activity
 	    Button confirmButton = (Button) findViewById(R.id.confirm);
 	    
 	    mRowId = null;
-	    Bundle extras = getIntent().getExtras();
+	    Bundle extras = getIntent().getExtras();	// Contains contents of the note
 	    if (extras != null)
 	    {
+	    	// Extract the contents of the note and paste them
 	    	String title = extras.getString("Title");
 	    	String body = extras.getString("Comment");
 	    	
@@ -45,14 +47,18 @@ public class EditNoteActivity extends Activity
             
             
 	    }
-
+	    /*
+	     * Upon hitting confirm button, we will pack up all the edits
+	     * and send them to the previous activity (NoteActivity) for
+	     * processing
+	     */
 	    confirmButton.setOnClickListener(new View.OnClickListener() 
 	    {
-
+	    	
             public void onClick(View view) 
             {
-                Bundle bundle = new Bundle();
-
+                Bundle bundle = new Bundle();	// Creates a bundle to hold the edits
+                
                 bundle.putString("Title", mTitleText.getText().toString());
                 bundle.putString("Comments", mBodyText.getText().toString());
                 if (mRowId != null) 

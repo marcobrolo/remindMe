@@ -1,5 +1,9 @@
 package com.example.remindme;
-
+/*
+ *  Template activity which other activities extend so they can use the action bar
+ *  menu without having repeated code. Just like BaseActivity.Java, except this
+ *  extends for Listactivity
+ */
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
