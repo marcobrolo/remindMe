@@ -44,8 +44,6 @@ public class EditNoteActivity extends Activity
             {
                 mBodyText.setText(body);
             }
-            
-            
 	    }
 	    /*
 	     * Upon hitting confirm button, we will pack up all the edits

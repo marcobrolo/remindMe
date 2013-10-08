@@ -32,6 +32,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
 	
 	private static final int ACTIVITY_EDIT_NOTE = 0;
 	
+	
 	public ExpandableListAdapter(Context context, List<String> listDataHeader,
 			HashMap<String, List<String>> listChildData)
 	{

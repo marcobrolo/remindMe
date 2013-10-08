@@ -26,6 +26,7 @@ public final class R {
     }
     public static final class id {
         public static final int action_settings=0x7f08000c;
+        public static final int add_note=0x7f08000e;
         public static final int body=0x7f080001;
         public static final int confirm=0x7f080002;
         public static final int event=0x7f08000d;

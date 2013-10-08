@@ -20,8 +20,8 @@
 	    android:showAsAction="always">
 	</item>
 	<item
-	    android:id="@+id/refresh"
-	    android:title="refresh"
+	    android:id="@+id/add_note"
+	    android:title="Add note"
 	    android:orderInCategory="3"
 	    android:showAsAction="always">
 	</item>

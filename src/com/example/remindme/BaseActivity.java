@@ -58,8 +58,9 @@ public class BaseActivity extends Activity
 			startActivity(new Intent(this, MainActivity.class));
 			break;
 		
-		case R.id.refresh:
-			Log.i(TAG, "refresh clicked");
+		case R.id.add_note:
+			Log.i(TAG, "adding_note");
+			startActivity(new Intent(this, AddNoteActivity.class));
 			break;
 		
 		}
