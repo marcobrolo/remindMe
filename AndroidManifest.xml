@@ -26,6 +26,9 @@
         <activity android:name=".EventActivity"></activity>
         <activity android:name=".EditNoteActivity"></activity>
         <activity android:name=".AddNoteActivity"></activity>
+        <activity android:name=".ConfirmCancelDialogActivity"
+            		android:theme="@android:style/Theme.Dialog">
+        </activity>
     </application>
 
 </manifest>

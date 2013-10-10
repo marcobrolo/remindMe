@@ -58,9 +58,9 @@ public class NotesDataSource
 	/*
 	 * deletes comment from db
 	 */
-	public void deleteComment(note note)
+	public void deleteComment(long id)
 	{
-		long id = note.getId();
+		//long id = note.getId();
 		database.delete(NoteSqlHelper.TABLE_NAME, NoteSqlHelper.COLUMN_ID
 			+ " = " + id, null);
 	}

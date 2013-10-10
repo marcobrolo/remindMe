@@ -26,6 +26,7 @@ public class NoteActivity extends BaseActivity
     private final String TAG = "NoteActivity";
     private static final int ACTIVITY_EDIT_NOTE = 0;
     private static final int ACTIVITY_ADD_NOTE = 1;
+    private static final int ACTIVITY_REMOVE_NOTE = 2;
     
     /*
      * own option menu since we want different action bar menu than other activities
@@ -85,9 +86,7 @@ public class NoteActivity extends BaseActivity
         	List<note> categoryNotes = datasource.getCategoryNotes(catagoryList.get(i));
         	List<String> notesArray = new ArrayList<String>();
         	
-        	listDataHeader.add(catagoryList.get(i));
-        	Log.d("getting specifi notes", "Getting specific notes");
-        	
+        	listDataHeader.add(catagoryList.get(i));   	
         	
         	for (int j = 0; j<categoryNotes.size(); j++)
         	{	
@@ -150,7 +149,7 @@ public class NoteActivity extends BaseActivity
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent intent)
 	{
-		Log.d(TAG, "onActivityResult");
+		Log.d(TAG, "onActivityResult with request code" + String.valueOf(requestCode) + String.valueOf(resultCode));
 		String category, comment, deliminator = null;
 		long id = 0;
 		Bundle extras = null;
@@ -174,29 +173,6 @@ public class NoteActivity extends BaseActivity
 				id = extras.getLong("RowId");
 				deliminator = ":";
 				String[] tokens = extras.getString("Comments").split(deliminator);
-	/*
-				for (int i = 0; i < tokens.length; i++)
-				{
-					Log.d(TAG+"see tokens", tokens[i]);
-					if (i == 0)
-					{
-						id = Long.valueOf(tokens[0]);
-					}
-					else
-					{
-						if (tokens[i] != null && tokens[i] !="null")
-						{
-							if (comment == null)
-							{
-								comment = tokens[i];
-							}
-							else
-							{
-								comment += tokens[i];
-							}
-						}
-					}
-				}*/
 				note noteVal = new note();
 				noteVal.setId(id);
 				noteVal.setCategory(category);
@@ -210,20 +186,37 @@ public class NoteActivity extends BaseActivity
 			 * Upon finishing adding a comment, this view will collect
 			 * the proposed changes and process them
 			 */
-			
+			Log.d(TAG, "adding note case");
 			if (resultCode == Activity.RESULT_OK)
 			{
 				// if user hits okay button rather than cancel in the add note activity
-				Log.d(TAG, "Finised adding now coming to noteactivity");
 				category = extras.getString("Title");
-				Log.d(TAG, "1");
 				comment = extras.getString("Comments");
 				addNote(category, comment);
+			}
+			break;
+			
+		case ACTIVITY_REMOVE_NOTE:
+			if (resultCode == Activity.RESULT_OK)
+			{
+				id = getIdFromComment(extras.getString("Comment"));
+				datasource.deleteComment(id);
+				refreshList();
 			}
 			break;
 		default:
 			Log.d(TAG+"onACtivityResult", "invalid switch result");
 		}
+	}
+	
+	private long getIdFromComment(String comment)
+	{
+		Log.d(TAG, "getting id from comments");
+		long id = 0;
+		String deliminator = ":";
+		String[] tokens = comment.split(deliminator);
+		id = Long.valueOf(tokens[0]);
+		return id;
 	}
 	
 	/*

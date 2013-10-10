@@ -59,6 +59,7 @@ public class AddNoteActivity extends Activity
 
                     Intent mIntent = new Intent();
                     mIntent.putExtras(bundle);
+
                     setResult(RESULT_OK, mIntent);
                     finish();
             	}
@@ -89,7 +90,7 @@ public class AddNoteActivity extends Activity
 	    {
 	    	
             public void onClick(View view) 
-            {
+            {	
                 //setResult(RESULT_CANCELED, null);
                 finish();
             }

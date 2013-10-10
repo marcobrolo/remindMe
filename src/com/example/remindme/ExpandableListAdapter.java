@@ -12,7 +12,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -31,6 +33,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
 	private final String TAG = "Expandable list adapter";
 	
 	private static final int ACTIVITY_EDIT_NOTE = 0;
+	private static final int ACTIVITY_REMOVE_NOTE = 2;
 	
 	
 	public ExpandableListAdapter(Context context, List<String> listDataHeader,
@@ -83,11 +86,41 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter
 				Log.d(TAG, "child item clicked");
 				Log.d(TAG, "header is " + headerText);
 				Log.d(TAG, "child is "+ childText);
-				Intent intent = new Intent (ExpandableListAdapter.this._context, EditNoteActivity.class);
-				intent.putExtra("Title", headerText);
-				intent.putExtra("Comment", childText);
-				((Activity)ExpandableListAdapter.this._context).startActivityForResult(intent,ACTIVITY_EDIT_NOTE);
+				
+				// create alert dialog to give user option to iether
+				// delete or edit the comment, and cancel the alert
+				AlertDialog.Builder alertDiag = new AlertDialog.Builder(ExpandableListAdapter.this._context);
+		    	alertDiag.setTitle("Edit comment");
+		    	alertDiag.setMessage("Select option");
+		    	alertDiag.setNegativeButton("Cancel", null);
+		    	alertDiag.setPositiveButton("Edit", new AlertDialog.OnClickListener()
+		    	{
+					@Override
+					public void onClick(DialogInterface dialog, int which) 
+					{
+						
+						Intent intent = new Intent (ExpandableListAdapter.this._context, EditNoteActivity.class);
+						intent.putExtra("Title", headerText);
+						intent.putExtra("Comment", childText);
+						((Activity)ExpandableListAdapter.this._context).startActivityForResult(intent,ACTIVITY_EDIT_NOTE);
+					}
+		    	});
+		    	alertDiag.setNeutralButton("Delete", new AlertDialog.OnClickListener()
+		    	{
 
+					@Override
+					public void onClick(DialogInterface dialog, int which)
+					{
+						Log.d(TAG, "Try to remove " + childText);
+						
+						Intent intent = new Intent (ExpandableListAdapter.this._context, ConfirmCancelDialogActivity.class);
+						intent.putExtra("Title", headerText);
+						intent.putExtra("Comment", childText);
+						((Activity)ExpandableListAdapter.this._context).startActivityForResult(intent,ACTIVITY_REMOVE_NOTE);
+					}
+		    	});
+		    	alertDiag.show();
+				
 			}
 			
 		});
