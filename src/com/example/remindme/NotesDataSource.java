@@ -85,6 +85,26 @@ public class NotesDataSource
 		return notes;
 	}
 	
+	private void debugDisplayALLNotes()
+	{
+		long id = 0;
+		String category, comment = null;
+		Cursor cursor = database.query(NoteSqlHelper.TABLE_NAME,
+				allColumns, null, null, null, null, null);
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast())
+		{
+			id = cursor.getLong(0);
+			category = cursor.getString(1);
+			comment = cursor.getString(2);
+			Log.d(TAG + ":debugDisplayAllNotes",
+					String.valueOf(id) + category + comment );
+			cursor.moveToNext();
+		}
+		cursor.close();
+		
+	}
+	
 	/*
 	 * Returns list of all categories (unique)
 	 */
@@ -133,14 +153,22 @@ public class NotesDataSource
 	 */
 	public int updateComment(note note)
 	{	
+		int returnCode = 0;
 		database = dbHelper.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		
+		Log.d(TAG +":UpdateComment", note.getCategory()+note.getComment());
 		values.put(NoteSqlHelper.COLUMN_CATEGORY, note.getCategory());
 		values.put(NoteSqlHelper.COLUMN_COMMENT, note.getComment());
 		
-		return database.update(NoteSqlHelper.TABLE_NAME, values, NoteSqlHelper.COLUMN_ID + " LIKE ?",
-				new String[]{String.valueOf(note.getId())});
+		/*return database.update(NoteSqlHelper.TABLE_NAME, values, NoteSqlHelper.COLUMN_ID + " LIKE ?",
+				new String[]{String.valueOf(note.getId())});*/
+		returnCode = database.update(NoteSqlHelper.TABLE_NAME,
+								values,
+								NoteSqlHelper.COLUMN_ID + " = " + String.valueOf(note.getId()),
+								null);
+		debugDisplayALLNotes();
+		return returnCode;
 	}
 	
 	/*

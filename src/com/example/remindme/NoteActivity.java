@@ -171,15 +171,23 @@ public class NoteActivity extends BaseActivity
 
 			for (int i = 0; i < tokens.length; i++)
 			{
+				Log.d(TAG+"see tokens", tokens[i]);
 				if (i ==0)
 				{
 					id = Long.valueOf(tokens[0]);
 				}
 				else
 				{
-					if (tokens[i] != null)
+					if (tokens[i] != null && tokens[i] !="null")
 					{
-						comment += tokens[i];
+						if (comment == null)
+						{
+							comment = tokens[i];
+						}
+						else
+						{
+							comment += tokens[i];
+						}
 					}
 				}
 			}
@@ -188,6 +196,7 @@ public class NoteActivity extends BaseActivity
 			noteVal.setCategory(category);
 			noteVal.setComment(comment);
 			editNote(noteVal);
+			break;
 			
 		case ACTIVITY_ADD_NOTE:
 			/*
@@ -199,6 +208,9 @@ public class NoteActivity extends BaseActivity
 			Log.d(TAG, "1");
 			comment = extras.getString("Comments");
 			addNote(category, comment);
+			break;
+		default:
+			Log.d(TAG+"onACtivityResult", "invalid switch result");
 		}
 	}
 	
