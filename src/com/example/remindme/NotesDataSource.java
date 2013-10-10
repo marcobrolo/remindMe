@@ -20,6 +20,7 @@ public class NotesDataSource
 	private NoteSqlHelper dbHelper;
 	private String[] allColumns = { NoteSqlHelper.COLUMN_ID, 
 			NoteSqlHelper.COLUMN_CATEGORY, NoteSqlHelper.COLUMN_COMMENT};
+	private final String TAG = "NotesDataSource";
 	
 	public NotesDataSource(Context context)
 	{
@@ -64,6 +65,9 @@ public class NotesDataSource
 			+ " = " + id, null);
 	}
 	
+	/*
+	 * Grabs all comments (and categories) from db
+	 */
 	public List<note> getAllNotes()
 	{
 		List<note> notes = new ArrayList<note>();
@@ -81,7 +85,53 @@ public class NotesDataSource
 		return notes;
 	}
 	
-	public int updateContact(note note)
+	/*
+	 * Returns list of all categories (unique)
+	 */
+	public List<String> getCategory()
+	{
+		List<String> categories = new ArrayList<String>();
+		Cursor cursor = database.rawQuery("Select distinct " + NoteSqlHelper.COLUMN_CATEGORY 
+											+ " from " + NoteSqlHelper.TABLE_NAME,
+											null);
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast())
+		{
+			Log.d(TAG + ":getting categories", cursor.getString(0));
+			categories.add(cursor.getString(0));
+			cursor.moveToNext();
+		}
+		cursor.close();
+		return categories;
+	}
+	
+	/*
+	 * Returns all the comments under a category in form of
+	 * note objects
+	 */
+	public List<note> getCategoryNotes(String category)
+	{
+		List<note> notes = new ArrayList<note>();
+		Cursor cursor = database.rawQuery("Select * from " + NoteSqlHelper.TABLE_NAME +
+											" where " + NoteSqlHelper.COLUMN_CATEGORY + 
+											" = '" + category+"'",
+											null);
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast())
+		{
+			note noteVal = cursorToNote(cursor);
+			//Log.d(TAG, noteVal.getCategory()+noteVal.getComment());
+			notes.add(noteVal);
+			cursor.moveToNext();
+		}
+		cursor.close();
+		return notes;
+	}
+	
+	/*
+	 * updates comment from database
+	 */
+	public int updateComment(note note)
 	{	
 		database = dbHelper.getWritableDatabase();
 		ContentValues values = new ContentValues();
@@ -93,13 +143,17 @@ public class NotesDataSource
 				new String[]{String.valueOf(note.getId())});
 	}
 	
+	/*
+	 * converts the query our cursor is pointing to into
+	 * a notes object
+	 */
 	private note cursorToNote(Cursor cursor)
 	{
 		note noteVal = new note();
 		noteVal.setId(cursor.getLong(0));
 		noteVal.setCategory(cursor.getString(1));
 		noteVal.setComment(cursor.getString(2));
-		Log.d("inserting comment", cursor.getString(1)+cursor.getString(2));
+		//Log.d("inserting comment", cursor.getString(1)+cursor.getString(2));
 		return noteVal;
 	}
 }

@@ -25,6 +25,7 @@ public class NoteActivity extends BaseActivity
     private NotesDataSource datasource;
     private final String TAG = "NoteActivity";
     private static final int ACTIVITY_EDIT_NOTE = 0;
+    private static final int ACTIVITY_ADD_NOTE = 1;
     
     /*
      * own option menu since we want different action bar menu than other activities
@@ -46,13 +47,12 @@ public class NoteActivity extends BaseActivity
 	{	
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.note_main);
-        this.deleteDatabase("comments.db");
+        //this.deleteDatabase("comments.db");
         // add database
     	datasource = new NotesDataSource(this);
         Log.i(TAG, "create new event data source");
     	datasource.open();
         Log.i(TAG, "open new event data source");
-        datasource.createComment("Custom Cat2", "custom com2");
         
     	List<note> notes = datasource.getAllNotes();
     	
@@ -60,7 +60,7 @@ public class NoteActivity extends BaseActivity
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
  
         // preparing list data
-        prepareListData(notes);
+        prepareListData();
  
         listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
  
@@ -69,27 +69,52 @@ public class NoteActivity extends BaseActivity
 	}
 	
 	/*
-	 * For testing purposes, create sample data
+	 * Grabs information from the database and sets it out for
+	 * the expandableListView to list each category and the according
+	 * comments
 	 */
-	private void prepareListData(List<note> notes)
+	private void prepareListData()
 	{
         listDataHeader = new ArrayList<String>();
         listDataChild = new HashMap<String, List<String>>();
  
-        // Adding child data
+        List<String> catagoryList = datasource.getCategory();
+        for (int i = 0; i<catagoryList.size(); i++)
+        {	
+        	Log.d("inside loop", "Getting specific notes");
+        	List<note> categoryNotes = datasource.getCategoryNotes(catagoryList.get(i));
+        	List<String> notesArray = new ArrayList<String>();
+        	
+        	listDataHeader.add(catagoryList.get(i));
+        	Log.d("getting specifi notes", "Getting specific notes");
+        	
+        	
+        	for (int j = 0; j<categoryNotes.size(); j++)
+        	{	
+        		Log.d("getting catnotes", categoryNotes.get(j).getComment());
+        		notesArray.add(String.valueOf(categoryNotes.get(j).getId()) + ":"
+        				+ categoryNotes.get(j).getComment());
+        	}
+        	listDataChild.put(listDataHeader.get(i), notesArray);
+        }
+        
+       
+    }
+	
+	/*
+	 * For testing purposes, create sample data
+	 */
+	private void addTestData()
+	{
+		listDataHeader = new ArrayList<String>();
+        listDataChild = new HashMap<String, List<String>>();
+        
+		// Adding child data
         listDataHeader.add("Top 250");
         listDataHeader.add("Now Showing");
         listDataHeader.add("Coming Soon..");
-        listDataHeader.add(notes.get(0).getCategory());
-        Log.d("double check notes update", notes.get(0).getComment()+notes.get(0).getCategory());
         
-        // add child data for the notes
-        List<String> notesArray = new ArrayList<String>();
-        notesArray.add(String.valueOf(notes.get(0).getId()) + ":"
-        		+ notes.get(0).getComment());
- 
-        // Adding child data
-        List<String> top250 = new ArrayList<String>();
+		List<String> top250 = new ArrayList<String>();
         top250.add("The Shawshank Redemption");
         top250.add("The Godfather");
         top250.add("The Godfather: Part II");
@@ -116,8 +141,7 @@ public class NoteActivity extends BaseActivity
         listDataChild.put(listDataHeader.get(0), top250); // Header, Child data
         listDataChild.put(listDataHeader.get(1), nowShowing);
         listDataChild.put(listDataHeader.get(2), comingSoon);
-        listDataChild.put(listDataHeader.get(3), notesArray);
-    }
+	}
 	
 	/*
 	 * Used for modifying a comment, it will return to this screen with the newly
@@ -128,20 +152,21 @@ public class NoteActivity extends BaseActivity
 	protected void onActivityResult(int requestCode, int resultCode, Intent intent)
 	{
 		Log.d(TAG, "onActivityResult");
-		//super.onActivityResult(requestCode, resultCode, intent);
-		Bundle extras = intent.getExtras();
+		String category, comment, deliminator = null;
+		long id = 0;
 		
+		Bundle extras = intent.getExtras();
 		switch(requestCode)
 		{
 		case ACTIVITY_EDIT_NOTE:
 			/*
-			 * Upon finis editing a comment, this view will collect
+			 * Upon finish editing a comment, this view will collect
 			 * the proposed changes and process them
 			 */
-			String category = extras.getString("Title");
-			String comment = null ;
-			long id = 0 ;
-			String deliminator = ":";
+			category = extras.getString("Title");
+			comment = null ;
+			id = 0 ;
+			deliminator = ":";
 			String[] tokens = extras.getString("Comments").split(deliminator);
 
 			for (int i = 0; i < tokens.length; i++)
@@ -158,12 +183,22 @@ public class NoteActivity extends BaseActivity
 					}
 				}
 			}
-			
 			note noteVal = new note();
 			noteVal.setId(id);
 			noteVal.setCategory(category);
 			noteVal.setComment(comment);
 			editNote(noteVal);
+			
+		case ACTIVITY_ADD_NOTE:
+			/*
+			 * Upon finishing adding a comment, this view will collect
+			 * the proposed changes and process them
+			 */
+			Log.d(TAG, "Finised adding now coming to noteactivity");
+			category = extras.getString("Title");
+			Log.d(TAG, "1");
+			comment = extras.getString("Comments");
+			addNote(category, comment);
 		}
 	}
 	
@@ -172,9 +207,17 @@ public class NoteActivity extends BaseActivity
 	 */
 	private void editNote(note noteVal)
 	{
-		int err = datasource.updateContact(noteVal);
-		List<note> notes = datasource.getAllNotes();
-		prepareListData(notes);
+		datasource.updateComment(noteVal);
+		refreshList();
+	}
+	
+	/*
+	 * Used to process information from AddNoteActivity
+	 */
+	private void addNote(String category, String comment)
+	{
+		Log.d(TAG, "addNote()");
+		datasource.createComment(category, comment);
 		refreshList();
 	}
 	
@@ -183,6 +226,7 @@ public class NoteActivity extends BaseActivity
 	 */
 	private void refreshList()
 	{
+		prepareListData();
 		listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
 		//listAdapter.notifyDataSetChanged();
 		expListView.setAdapter(listAdapter);

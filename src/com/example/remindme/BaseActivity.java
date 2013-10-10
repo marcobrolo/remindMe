@@ -11,6 +11,7 @@ import android.view.MenuItem;
 
 public class BaseActivity extends Activity
 {
+	private static final int ACTIVITY_ADD_NOTE = 1;
 	private final String TAG = "Base Activity";
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) 
@@ -60,7 +61,8 @@ public class BaseActivity extends Activity
 		
 		case R.id.add_note:
 			Log.i(TAG, "adding_note");
-			startActivity(new Intent(this, AddNoteActivity.class));
+			//startActivity(new Intent(this, AddNoteActivity.class));
+			startActivityForResult(new Intent(this, AddNoteActivity.class), ACTIVITY_ADD_NOTE);
 			break;
 		
 		}

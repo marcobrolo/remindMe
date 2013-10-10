@@ -21,9 +21,11 @@ public class AddNoteActivity extends Activity
 	    setContentView(R.layout.edit_note_main);
 	    setTitle("Adding notes");
 	    
-
+	    mTitleText = (EditText) findViewById(R.id.title);
+	    mBodyText = (EditText) findViewById(R.id.body);
 	    
 	    datasource = new NotesDataSource(this);
+	    datasource.open();
 	    
 	    Button confirmButton = (Button) findViewById(R.id.confirm);
 	    
@@ -33,10 +35,28 @@ public class AddNoteActivity extends Activity
 	    	
             public void onClick(View view) 
             {
+                Bundle bundle = new Bundle();	// Creates a bundle to hold the edits
                 
+                bundle.putString("Title", mTitleText.getText().toString());
+                bundle.putString("Comments", mBodyText.getText().toString());
+                if (mRowId != null) 
+                {
+                    bundle.putLong("RowId", mRowId);
+                }
+
+                Intent mIntent = new Intent();
+                mIntent.putExtras(bundle);
+                setResult(RESULT_OK, mIntent);
+                finish();
             }
 
         });
+	}
+	
+	private void createNote(note note)
+	{
+		datasource.createComment(mTitleText.getText().toString()
+								, mBodyText.getText().toString());
 	}
 	
 }
