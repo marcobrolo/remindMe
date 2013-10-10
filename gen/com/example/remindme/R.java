@@ -25,20 +25,21 @@ public final class R {
         public static final int navigation_back=0x7f020001;
     }
     public static final class id {
-        public static final int action_settings=0x7f08000c;
-        public static final int add_note=0x7f08000e;
+        public static final int action_settings=0x7f08000d;
+        public static final int add_note=0x7f08000f;
         public static final int body=0x7f080001;
+        public static final int cancel=0x7f080003;
         public static final int confirm=0x7f080002;
-        public static final int event=0x7f08000d;
-        public static final int home=0x7f080009;
-        public static final int lblListHeader=0x7f080003;
-        public static final int lblListItem=0x7f080004;
-        public static final int lvExp=0x7f080005;
-        public static final int menu_settings=0x7f080008;
-        public static final int myTextView=0x7f080006;
-        public static final int myTextViewTwo=0x7f080007;
-        public static final int note=0x7f08000a;
-        public static final int refresh=0x7f08000b;
+        public static final int event=0x7f08000e;
+        public static final int home=0x7f08000a;
+        public static final int lblListHeader=0x7f080004;
+        public static final int lblListItem=0x7f080005;
+        public static final int lvExp=0x7f080006;
+        public static final int menu_settings=0x7f080009;
+        public static final int myTextView=0x7f080007;
+        public static final int myTextViewTwo=0x7f080008;
+        public static final int note=0x7f08000b;
+        public static final int refresh=0x7f08000c;
         public static final int title=0x7f080000;
     }
     public static final class layout {
@@ -51,15 +52,17 @@ public final class R {
         public static final int row=0x7f030006;
     }
     public static final class menu {
-        public static final int event_activity_menu=0x7f070000;
-        public static final int main=0x7f070001;
-        public static final int main_activity_menu=0x7f070002;
-        public static final int note_activity_menu=0x7f070003;
+        public static final int editadd_note_activity_menu=0x7f070000;
+        public static final int event_activity_menu=0x7f070001;
+        public static final int main=0x7f070002;
+        public static final int main_activity_menu=0x7f070003;
+        public static final int note_activity_menu=0x7f070004;
     }
     public static final class string {
         public static final int action_settings=0x7f050001;
         public static final int app_name=0x7f050000;
         public static final int body=0x7f050005;
+        public static final int cancel=0x7f050007;
         public static final int confirm=0x7f050006;
         public static final int hello_world=0x7f050002;
         public static final int menu_settings=0x7f050003;

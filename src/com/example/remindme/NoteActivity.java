@@ -98,7 +98,6 @@ public class NoteActivity extends BaseActivity
         	listDataChild.put(listDataHeader.get(i), notesArray);
         }
         
-       
     }
 	
 	/*
@@ -154,8 +153,13 @@ public class NoteActivity extends BaseActivity
 		Log.d(TAG, "onActivityResult");
 		String category, comment, deliminator = null;
 		long id = 0;
+		Bundle extras = null;
 		
-		Bundle extras = intent.getExtras();
+		if (resultCode == Activity.RESULT_OK)
+		{
+			extras = intent.getExtras();
+		}
+		
 		switch(requestCode)
 		{
 		case ACTIVITY_EDIT_NOTE:
@@ -163,39 +167,42 @@ public class NoteActivity extends BaseActivity
 			 * Upon finish editing a comment, this view will collect
 			 * the proposed changes and process them
 			 */
-			category = extras.getString("Title");
-			comment = null ;
-			id = 0 ;
-			deliminator = ":";
-			String[] tokens = extras.getString("Comments").split(deliminator);
-
-			for (int i = 0; i < tokens.length; i++)
+			if (resultCode == Activity.RESULT_OK)
 			{
-				Log.d(TAG+"see tokens", tokens[i]);
-				if (i ==0)
+				category = extras.getString("Title");
+				comment = extras.getString("Comments");
+				id = extras.getLong("RowId");
+				deliminator = ":";
+				String[] tokens = extras.getString("Comments").split(deliminator);
+	/*
+				for (int i = 0; i < tokens.length; i++)
 				{
-					id = Long.valueOf(tokens[0]);
-				}
-				else
-				{
-					if (tokens[i] != null && tokens[i] !="null")
+					Log.d(TAG+"see tokens", tokens[i]);
+					if (i == 0)
 					{
-						if (comment == null)
+						id = Long.valueOf(tokens[0]);
+					}
+					else
+					{
+						if (tokens[i] != null && tokens[i] !="null")
 						{
-							comment = tokens[i];
-						}
-						else
-						{
-							comment += tokens[i];
+							if (comment == null)
+							{
+								comment = tokens[i];
+							}
+							else
+							{
+								comment += tokens[i];
+							}
 						}
 					}
-				}
+				}*/
+				note noteVal = new note();
+				noteVal.setId(id);
+				noteVal.setCategory(category);
+				noteVal.setComment(comment);
+				editNote(noteVal);
 			}
-			note noteVal = new note();
-			noteVal.setId(id);
-			noteVal.setCategory(category);
-			noteVal.setComment(comment);
-			editNote(noteVal);
 			break;
 			
 		case ACTIVITY_ADD_NOTE:
@@ -203,11 +210,16 @@ public class NoteActivity extends BaseActivity
 			 * Upon finishing adding a comment, this view will collect
 			 * the proposed changes and process them
 			 */
-			Log.d(TAG, "Finised adding now coming to noteactivity");
-			category = extras.getString("Title");
-			Log.d(TAG, "1");
-			comment = extras.getString("Comments");
-			addNote(category, comment);
+			
+			if (resultCode == Activity.RESULT_OK)
+			{
+				// if user hits okay button rather than cancel in the add note activity
+				Log.d(TAG, "Finised adding now coming to noteactivity");
+				category = extras.getString("Title");
+				Log.d(TAG, "1");
+				comment = extras.getString("Comments");
+				addNote(category, comment);
+			}
 			break;
 		default:
 			Log.d(TAG+"onACtivityResult", "invalid switch result");
