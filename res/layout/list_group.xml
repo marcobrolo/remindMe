@@ -3,8 +3,8 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="8dp"
-    android:background="#FF4800">
+    android:padding="1dp"
+    android:background="@layout/prent_group_custom_background">
  
  
     <TextView

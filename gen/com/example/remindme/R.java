@@ -51,7 +51,8 @@ public final class R {
         public static final int list_group=0x7f030004;
         public static final int list_item=0x7f030005;
         public static final int note_main=0x7f030006;
-        public static final int row=0x7f030007;
+        public static final int prent_group_custom_background=0x7f030007;
+        public static final int row=0x7f030008;
     }
     public static final class menu {
         public static final int editadd_note_activity_menu=0x7f070000;

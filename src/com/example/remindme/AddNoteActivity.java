@@ -36,7 +36,7 @@ public class AddNoteActivity extends Activity
 	{
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.edit_note_main);
-	    setTitle("Adding notes");
+	    setTitle("Adding no	tes");
 	    
 	    mTitleText = (EditText) findViewById(R.id.title);
 	    mBodyText = (EditText) findViewById(R.id.body);	    

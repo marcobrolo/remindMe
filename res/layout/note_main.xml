@@ -7,7 +7,13 @@
  
             <ExpandableListView
                 android:id="@+id/lvExp"
-                android:layout_height="match_parent"
-                android:layout_width="match_parent"/>   
+                android:groupIndicator="@null"
+                android:layout_margin="10dip"
+    			android:divider="@android:color/transparent" 
+    			android:dividerHeight="10dip"
+    			android:cacheColorHint="#3b8f16"
+    			android:layout_height="fill_parent"
+                android:layout_width="fill_parent"
+                />   
  
 </LinearLayout>
